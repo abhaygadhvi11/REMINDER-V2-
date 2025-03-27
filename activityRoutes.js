@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authenticateToken = require("../middlewares/authMiddleware"); // Ensure this middleware exists
-const db = require('../db/dbConfig');
+const db = require('../dbConfig');
 
 // GET: Fetch all activities for a specific task, including assigned tasks
 router.get("/tasks/:task_id/activities", authenticateToken, (req, res) => {
