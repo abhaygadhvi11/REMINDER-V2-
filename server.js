@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api', authRoutes);
-app.use('/api', taskRoutes);
+app.use('/api', taskRoutes);        
 app.use('/api', activityRoutes); 
 
 // Error Handling Middleware
