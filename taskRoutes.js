@@ -191,43 +191,43 @@ router.get('/tasks/user', authenticateToken, (req, res) => {
     });
 });
 
-// GET: Fetch tasks for a specific user
-router.get('/tasks/user', authenticateToken, (req, res) => {
+// GET: Fetch tasks created by the user
+router.get('/api/tasks/created', authenticateToken, (req, res) => {
     const user_id = req.user.id;
-    const user_email = req.user.email;
-    const { f } = req.query;
+    const { f } = req.query; 
 
     let sql = `
         SELECT * FROM tasks 
-        WHERE user_id = ? OR assigned_to_user_id = ? OR assigned_to_email = ? 
+        WHERE user_id = ? 
         ORDER BY enddate ASC
     `;
 
-    if (f == 1) {
+    if (f == 1) { 
         sql = `
             SELECT * FROM tasks 
-            WHERE (user_id = ? OR assigned_to_user_id = ? OR assigned_to_email = ?) 
-            AND enddate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+            WHERE user_id = ? 
+            AND enddate >= CURDATE() 
+            AND enddate <= DATE_ADD(CURDATE(), INTERVAL 7 DAY) 
             ORDER BY enddate ASC
         `;
     } else if (f == 2) {
         sql = `
             SELECT * FROM tasks 
-            WHERE (user_id = ? OR assigned_to_user_id = ? OR assigned_to_email = ?) 
-            AND enddate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 31 DAY)
+            WHERE user_id = ? 
+            AND enddate >= CURDATE() 
+            AND enddate <= DATE_ADD(CURDATE(), INTERVAL 31 DAY) 
             ORDER BY enddate ASC
         `;
     }
 
-    db.query(sql, [user_id, user_id, user_email], (err, results) => {
-        if (err) {
-            console.error('Database error:', err);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
+    db.query(sql, [user_id], (err, results) => {    
+        if (err) {  
+            return res.status(500).json({ error: err.message });
+        }                  
         if (results.length === 0) {
-            return res.status(404).json({ error: 'No tasks found for this user' });
+            return res.status(404).json({ error: 'No tasks created by this user' });
         }
-        res.json(results);
+        res.json(results);  
     });
 });
 
