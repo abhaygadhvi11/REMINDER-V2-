@@ -1,57 +1,68 @@
-// services/authService.js
-
-/*const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../dbConfig'); // Assuming you already have a database configuration
+const authRepository = require('../repositories/authRepository');
 
-// Service to handle user signup
-async function signupUser(email, password) {
+// User Signup Service
+const signup = async (email, password) => {
+    if (!email || !password) {
+        const error = new Error('Email and password are required');
+        error.status = 400;
+        throw error;
+    }
+
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const sql = 'INSERT INTO users (email, password) VALUES (?, ?)';
-
-        return new Promise((resolve, reject) => {
-            db.query(sql, [email, hashedPassword], (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result.insertId);
-                }
-            });
-        });
+        const insertId = await authRepository.createUser(email, hashedPassword);
+        
+        return {
+            message: 'User registered successfully',
+            id: insertId
+        };
     } catch (error) {
-        throw new Error('Error during password hashing');
+        console.error('Error during user registration:', error);
+        throw error;
     }
-}
+};
 
-// Service to handle user login
-async function loginUser(email, password) {
-    const sql = 'SELECT * FROM users WHERE email = ?';
+// User Login Service
+const login = async (email, password) => {
+    if (!email || !password) {
+        const error = new Error('Email and password are required');
+        error.status = 400;
+        throw error;
+    }
 
-    return new Promise((resolve, reject) => {
-        db.query(sql, [email], async (err, results) => {
-            if (err) {
-                reject(err);
-            } else if (results.length === 0) {
-                reject(new Error('Invalid credentials'));
-            } else {
-                const user = results[0];
-                const isMatch = await bcrypt.compare(password, user.password);
+    try {
+        const user = await authRepository.findUserByEmail(email);
+        
+        if (!user) {
+            const error = new Error('Invalid credentials');
+            error.status = 401;
+            throw error;
+        }
 
-                if (!isMatch) {
-                    reject(new Error('Invalid credentials'));
-                } else {
-                    const token = jwt.sign(
-                        { id: user.id, email: user.email },
-                        process.env.JWT_SECRET,
-                        { expiresIn: '10h' }
-                    );
-                    resolve(token);
-                }
-            }
-        });
-    });
-}
+        const isMatch = await bcrypt.compare(password, user.password);
+        
+        if (!isMatch) {
+            const error = new Error('Invalid credentials');
+            error.status = 401;
+            throw error;
+        }
 
-module.exports = { signupUser, loginUser };
-*/
+        const token = jwt.sign(
+            { id: user.id, email: user.email }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '10h' }
+        );
+
+        return { token };
+    } catch (error) {
+        console.error('Error during user login:', error);
+        throw error;
+    }
+};
+
+module.exports = {
+    signup,
+    login
+};
