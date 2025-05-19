@@ -65,6 +65,7 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });*/
 
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -76,10 +77,13 @@ const workflowInstanceRoutes = require('./routes/workflowInstanceRoutes');
 const workflowInstanceStepRoutes = require('./routes/workflowInstanceStepRoutes'); 
 const claimRoutes = require('./routes/claimRoutes');
 const policyRoutes = require('./routes/policyRoutes');
-const db = require('./models');
+const authRoutes = require('./routes/authRoutes');
+//const db = require('./models');
 //const logger = require('./utils/logger');
 
+// Middleware
 app.use(bodyParser.json());
+
 
 // Use routes  
 app.use('/api', taskRoutes);
@@ -90,12 +94,20 @@ app.use('/api', workflowInstanceRoutes);
 app.use('/api', workflowInstanceStepRoutes); 
 app.use('/api', claimRoutes);
 app.use('/api', policyRoutes);
-
+app.use('/api/auth', authRoutes);
 // Error handling middleware   
 app.use((err, req, res, next) => {
     res.status(500).json({ error: err.message });
 });
 
+// app.use(cors({
+// origin: "http://localhost:5173", // allow frontend origin
+// methods: ["GET", "POST", "PUT", "DELETE"],
+// allowedHeaders: ["Content-Type", "Authorization"],
+// credentials: true, // allow cookies, authorization headers
+// }));
+
+//PORT 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
