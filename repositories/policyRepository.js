@@ -5,7 +5,7 @@ const getAllPolicies = (callback) => {
   const query = `SELECT * FROM policies`;
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching policies:', err);
+      //console.error('Error fetching policies:', err);
       return callback(err);
     }
     callback(null, results);  
@@ -17,7 +17,7 @@ const getPolicyById = (policyId, callback) => {
   const query = `SELECT * FROM policies WHERE id = ?`;
   db.query(query, [policyId], (err, results) => {
     if (err) {
-      console.error('Error fetching policy by ID:', err);
+      //console.error('Error fetching policy by ID:', err);
       return callback(err);
     }
     callback(null, results[0]);
@@ -29,11 +29,11 @@ const createPolicy = (policyData, callback) => {
   const { user_id, policy_number, type, coverage_amount, premium, start_date, end_date, status } = policyData;
 
   const query = `INSERT INTO policies (user_id, policy_number, type, coverage_amount, premium, start_date, end_date, status) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+ VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
   db.query(query, [user_id, policy_number, type, coverage_amount, premium, start_date, end_date, status], (err, results) => {
     if (err) {
-      console.error('Error inserting policy:', err);
+      //console.error('Error inserting policy:', err);
       return callback(err);
     }
     callback(null, results.insertId);
