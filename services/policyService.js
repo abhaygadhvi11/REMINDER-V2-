@@ -1,6 +1,5 @@
-// ============================================
 // SERVICE (services/policyService.js)
-// ============================================
+
 const policyRepository = require('../repositories/policyRepository');
 
 // Function to get all policies using the repository

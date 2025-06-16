@@ -1,7 +1,5 @@
-
-// ============================================
 // REPOSITORY (repositories/policyRepository.js)
-// ============================================
+
 const db = require('../dbConfig');
 
 // Function to get all policies
