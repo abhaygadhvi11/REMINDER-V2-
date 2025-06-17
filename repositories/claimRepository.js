@@ -58,7 +58,7 @@ const createClaim = (claimData, callback) => {
       return callback(err);
     }
     callback(null, results.insertId);
-  });
+  });   
 };
 
 // Export repository functions

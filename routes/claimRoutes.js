@@ -13,4 +13,4 @@ router.get('/claims/:id', authenticateToken, claimController.getClaimById);
 // Define the route to create a new claim
 router.post('/claims', authenticateToken, claimController.createClaim);
 
-module.exports = router;
+module.exports = router;     

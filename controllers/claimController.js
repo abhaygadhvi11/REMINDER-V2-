@@ -83,7 +83,7 @@ const createClaim = (req, res) => {
     status: status || 'pending',
     //workflow_id
   };
-
+      
   claimService.createClaim(claimData, (error, claimId) => {
     if (error) {
       return res.status(500).json({ message: 'Error creating claim' });
