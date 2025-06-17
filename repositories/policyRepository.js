@@ -13,7 +13,7 @@ const getAllPolicies = (callback) => {
     callback(null, results);  
   });
 };
-
+[]
 // Function to get policy by ID
 const getPolicyById = (policyId, callback) => {
   const query = `SELECT * FROM policies WHERE id = ?`;

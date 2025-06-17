@@ -1,3 +1,4 @@
+// services/claimService.js
 const claimRepository = require('../repositories/claimRepository');
 
 // Function to get all claims using the repository

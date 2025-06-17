@@ -1,3 +1,4 @@
+// repositories/claimRepository.js
 const db = require('../dbConfig');
 
 // Function to get all claims
@@ -29,7 +30,7 @@ const createClaim = (claimData, callback) => {
   const { user_id, policy_id, claim_amount, status, workflow_id } = claimData;
 
   const query = `INSERT INTO claims (user_id, policy_id, claim_amount, status, workflow_id) 
-                VALUES (?, ?, ?, ?, ?)`;
+                 VALUES (?, ?, ?, ?, ?)`;
 
   db.query(query, [user_id, policy_id, claim_amount, status, workflow_id], (err, results) => {
     if (err) {
