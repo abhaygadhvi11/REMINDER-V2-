@@ -25,14 +25,34 @@ const getClaimById = (claimId, callback) => {
   });
 };
 
+// // Function to create a new claim in the database
+// const createClaim = (claimData, callback) => {
+//   const { user_id, policy_id, claim_amount, status, workflow_id } = claimData;
+
+//   const query = `INSERT INTO claims (user_id, policy_id, claim_amount, status, workflow_id) 
+//                  VALUES (?, ?, ?, ?, ?)`;
+
+//   db.query(query, [user_id, policy_id, claim_amount, status, workflow_id], (err, results) => {
+//     if (err) {
+//       console.error('Error inserting claim:', err);
+//       return callback(err);
+//     }
+//     callback(null, results.insertId);
+//   });
+// };
+
+// // Export repository functions
+// module.exports = { getAllClaims, getClaimById, createClaim };
+
+
 // Function to create a new claim in the database
 const createClaim = (claimData, callback) => {
-  const { user_id, policy_id, claim_amount, status, workflow_id } = claimData;
+  const { user_id, policy_id, claim_amount, status } = claimData;
 
-  const query = `INSERT INTO claims (user_id, policy_id, claim_amount, status, workflow_id) 
-                 VALUES (?, ?, ?, ?, ?)`;
+  const query = `INSERT INTO claims (user_id, policy_id, claim_amount, status) 
+                 VALUES (?, ?, ?, ?)`;
 
-  db.query(query, [user_id, policy_id, claim_amount, status, workflow_id], (err, results) => {
+  db.query(query, [user_id, policy_id, claim_amount, status], (err, results) => {
     if (err) {
       console.error('Error inserting claim:', err);
       return callback(err);
