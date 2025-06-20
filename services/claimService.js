@@ -32,6 +32,6 @@ const createClaim = (claimData, callback) => {
     }
     callback(null, claimId);
   });
-};       
+};        
 
 module.exports = { getAllClaims, getClaimById, createClaim };
