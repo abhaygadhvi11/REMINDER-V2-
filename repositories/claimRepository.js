@@ -13,17 +13,31 @@ const getAllClaims = (callback) => {
   });
 };
 
-// Function to get claim by ID
-const getClaimById = (claimId, callback) => {
-  const query = `SELECT * FROM claims WHERE id = ?`;
-  db.query(query, [claimId], (err, results) => {
+// // Function to get claim by ID
+// const getClaimById = (claimId, callback) => {
+//   const query = `SELECT * FROM claims WHERE policy_id = ?`;
+//   db.query(query, [claimId], (err, results) => {
+//     if (err) {
+//       console.error('Error fetching claim by ID:', err);
+//       return callback(err);
+//     }
+//     callback(null, results[0]);
+//   });
+// };
+
+// REPOSITORY
+// Function to get claims by Policy ID
+const getClaimByPolicyId = (policyId, callback) => {
+  const query = `SELECT * FROM claims WHERE policy_id = ?`;
+  db.query(query, [policyId], (err, results) => {
     if (err) {
-      console.error('Error fetching claim by ID:', err);
+      console.error('Error fetching claims by Policy ID:', err);
       return callback(err);
     }
-    callback(null, results[0]);
+    callback(null, results); // Return all claims for the policy
   });
 };
+
 
 // // Function to create a new claim in the database
 // const createClaim = (claimData, callback) => {
@@ -62,4 +76,4 @@ const createClaim = (claimData, callback) => {
 };
 
 // Export repository functions
-module.exports = { getAllClaims, getClaimById, createClaim };
+module.exports = { getAllClaims, getClaimByPolicyId, createClaim };

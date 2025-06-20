@@ -12,14 +12,26 @@ const getAllClaims = (callback) => {
   });
 };
 
-// Function to get claim by ID using the repository
-const getClaimById = (claimId, callback) => {
-  claimRepository.getClaimById(claimId, (err, claim) => { 
+// // Function to get claim by ID using the repository
+// const getClaimById = (claimId, callback) => {
+//   claimRepository.getClaimById(claimId, (err, claim) => { 
+//     if (err) {
+//       console.error('Error in service while fetching claim by ID:', err);
+//       return callback(err);
+//     }
+//     callback(null, claim);
+//   });
+// };
+
+// SERVICE
+// Function to get claims by Policy ID using the repository
+const getClaimByPolicyId = (policyId, callback) => {
+  claimRepository.getClaimByPolicyId(policyId, (err, claims) => { 
     if (err) {
-      console.error('Error in service while fetching claim by ID:', err);
+      console.error('Error in service while fetching claims by Policy ID:', err);
       return callback(err);
     }
-    callback(null, claim);
+    callback(null, claims);
   });
 };
 
@@ -34,4 +46,4 @@ const createClaim = (claimData, callback) => {
   });
 };        
 
-module.exports = { getAllClaims, getClaimById, createClaim };
+module.exports = { getAllClaims, getClaimByPolicyId, createClaim };

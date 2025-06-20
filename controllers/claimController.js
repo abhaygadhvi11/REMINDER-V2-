@@ -11,25 +11,44 @@ const getAllClaims = (req, res) => {
 };
 
 
-// API to get claim by ID
-const getClaimById = (req, res) => {
-  const claimId = req.params.id;
+// // API to get claim by ID
+// const getClaimById = (req, res) => {
+//   const claimId = req.params.id;
 
-  if (!claimId) {
-    return res.status(400).json({ message: 'Claim ID is missing' });
+//   if (!claimId) {
+//     return res.status(400).json({ message: 'Claim ID is missing' });
+//   }
+
+//   claimService.getClaimById(claimId, (error, claim) => {
+//     if (error) {
+//       return res.status(500).json({ message: 'Error fetching claim' });
+//     }
+//     if (!claim) {
+//       return res.status(404).json({ message: 'Claim not found' });
+//     }
+//     res.status(200).json(claim); 
+//   });
+// };
+
+// CONTROLLER
+// API to get claim by Policy ID
+const getClaimByPolicyId = (req, res) => {
+  const policyId = req.params.id;
+
+  if (!policyId) {
+    return res.status(400).json({ message: 'Policy ID is missing' });
   }
 
-  claimService.getClaimById(claimId, (error, claim) => {
+  claimService.getClaimByPolicyId(policyId, (error, claims) => {
     if (error) {
-      return res.status(500).json({ message: 'Error fetching claim' });
+      return res.status(500).json({ message: 'Error fetching claims' });
     }
-    if (!claim) {
-      return res.status(404).json({ message: 'Claim not found' });
+    if (!claims || claims.length === 0) {
+      return res.status(404).json({ message: 'No claims found for this policy' });
     }
-    res.status(200).json(claim); 
+    res.status(200).json(claims); 
   });
 };
-
 
 
 // API to create a new claim
@@ -62,4 +81,4 @@ const createClaim = (req, res) => {
   });
 };
 
-module.exports = { getAllClaims, getClaimById, createClaim };
+module.exports = { getAllClaims, getClaimByPolicyId, createClaim };
